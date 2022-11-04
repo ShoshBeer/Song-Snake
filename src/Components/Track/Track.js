@@ -15,18 +15,20 @@ export class Track extends React.Component {
     removeTrack() {
         this.props.onRemove(this.props.track);
     }
+
+    renderAction() {
+        const plusMinusButton = this.props.isRemoval? <button className="Track-action" onClick={this.removeTrack} >-</button> : <button className="Track-action" onClick={this.addTrack}>+</button>;
+        return plusMinusButton;
+    }
     
     render() {
-        let isRemoval;
-        const plusMinusButton = isRemoval? <button className="Track-action" onClick={this.removeTrack} >-</button> : <button className="Track-action" onClick={this.addTrack}>+</button>;
-
         return (
             <div className="Track">
                 <div className="Track-information">
                     <h3>{this.props.track.name}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}</p>
                 </div>
-                {plusMinusButton}
+                {this.renderAction()}
             </div>
         );
     }

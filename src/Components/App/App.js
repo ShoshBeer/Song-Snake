@@ -1,27 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
-import React from 'react';
 import { Spotify } from '../../util/Spotify';
+import React from 'react';
 
-
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       SearchResults: [
-        {name: null, artist: null, album: null, id: null},
-        {name: null, artist: null, album: null, id: null} ],
+        {name: 'name1', artist: 'artist1', album: 'album1', id: 1},
+        {name: 'name2', artist: 'artist2', album: 'album2', id: 2},
+        {name: 'name3', artist: 'artist3', album: 'album3', id: 3} ],
 
       playlistName: 'Ooga Chaka',
 
       playlistTracks: [
-        {name: 'Yours', artist: 'KGLW', album: 'Butterfly 3000', id: 1},
-        {name: 'Shanghai', artist: 'KGLW', album: 'Butterfly 3000', id: 2},
-        {name: 'Dreams', artist: 'KGLW', album: 'Butterfly 3000', id: 3},
-        {name: 'Blue Morpho', artist: 'KGLW', album: 'Butterfly 3000', id: 4} ]
+        {name: 'Yours', artist: 'KingGLW', album: 'Butterfly 3000', id: 4},
+        {name: 'Shanghai', artist: 'KGizzardLW', album: 'Butterfly 3001', id: 5},
+        {name: 'Dreams', artist: 'KGLizzardW', album: 'Butterfly 3002', id: 6},
+        {name: 'Blue Morpho', artist: 'KGLWizard', album: 'Butterfly 3002', id: 7} ]
      };
      this.addTrack = this.addTrack.bind(this);
      this.removeTrack = this.removeTrack.bind(this);
@@ -31,14 +30,19 @@ class App extends React.Component {
   }
 
   addTrack(track) {
-    if (this.state.playlistTracks.some((song) => {
-      song.id === track.id}) === false) {
-        this.setState({playlistTracks: this.state.playlistTracks.push(track)});
-    } 
+    const dupCheck = (song) => song.id === track.id;
+    const duplicate = this.state.playlistTracks.some(dupCheck);
+    if (duplicate) {
+      return 'This song is already in your playlist.';
+    } else {
+      const addedTrack = this.state.playlistTracks.push(track);
+      this.setState({playlistTracks: addedTrack});
+    }
   }
 
   removeTrack(track) {
-    this.setState({playlistTracks: this.state.playlistTracks.filter( el => { el.id !== track.id })});
+    const songCheck = (song) => song.id !== track.id;
+    this.setState({playlistTracks: this.state.playlistTracks.filter(songCheck)});
   }
 
   updatePlaylistName(name) {
@@ -67,34 +71,11 @@ class App extends React.Component {
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.SearchResults} onAdd={this.addTrack} />
-            <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} />
+            <SearchResults SearchResults={this.state.SearchResults} onAdd={this.addTrack} />
+            <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} tracks={this.state.SearchResults} />
           </div>
         </div>
       </div>
     );
   }
 }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-export default App;

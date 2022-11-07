@@ -1,7 +1,7 @@
 import { SearchBar } from "../Components/SearchBar/SearchBar";
 
 const clientID = '8160cc221c3148e3b8d0aed640dd3de9';
-const redirectURI = "http://localhost:3000/";
+const redirectURI = "http://three-click-playlist.surge.sh/";
 const baseURL = 'https://api.spotify.com/v1/'
 
 let accessToken;

@@ -8,20 +8,13 @@ import React from 'react';
 export class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = { 
-      SearchResults: [
-        {name: 'name1', artist: 'artist1', album: 'album1', id: 1},
-        {name: 'name2', artist: 'artist2', album: 'album2', id: 2},
-        {name: 'name3', artist: 'artist3', album: 'album3', id: 3} ],
-
-      playlistName: 'Ooga Chaka',
-
-      playlistTracks: [
-        {name: 'Yours', artist: 'KingGLW', album: 'Butterfly 3000', id: 4},
-        {name: 'Shanghai', artist: 'KGizzardLW', album: 'Butterfly 3001', id: 5},
-        {name: 'Dreams', artist: 'KGLizzardW', album: 'Butterfly 3002', id: 6},
-        {name: 'Blue Morpho', artist: 'KGLWizard', album: 'Butterfly 3002', id: 7} ]
+      SearchResults: [],
+      playlistName: 'My Playlist',
+      playlistTracks: []
      };
+
      this.addTrack = this.addTrack.bind(this);
      this.removeTrack = this.removeTrack.bind(this);
      this.updatePlaylistName = this.updatePlaylistName.bind(this);
@@ -33,10 +26,10 @@ export class App extends React.Component {
     const dupCheck = (song) => song.id === track.id;
     const duplicate = this.state.playlistTracks.some(dupCheck);
     if (duplicate) {
-      return 'This song is already in your playlist.';
+      return;
     } else {
-      const addedTrack = this.state.playlistTracks.push(track);
-      this.setState({playlistTracks: addedTrack});
+      this.state.playlistTracks.push(track);
+      this.setState({playlistTracks: this.state.playlistTracks});
     }
   }
 
@@ -50,17 +43,20 @@ export class App extends React.Component {
   }
 
   savePlaylist() {
-    Spotify.savePlaylist(this.state.playlistName, this.state.playlistTracks);
+    const trackURIs = this.state.playlistTracks.map( track => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState({
-      playlistName: '',
+      playlistName: 'New Playlist',
       playlistTracks: []
     });
-    //let trackURIs;
-    //this.state.playlistTracks.forEach( track => { trackURIs.push(track.id) });
   }
 
-  search(searchTerm) {
-    const results = Spotify.search(searchTerm);
+  // handleSavePlaylist(e) {
+
+  // }
+
+  async search(searchTerm) {
+    const results = await Spotify.search(searchTerm);
     this.setState({SearchResults: results});
   }
 

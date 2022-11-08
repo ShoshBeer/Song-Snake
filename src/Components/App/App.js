@@ -51,10 +51,6 @@ export class App extends React.Component {
     });
   }
 
-  // handleSavePlaylist(e) {
-
-  // }
-
   async search(searchTerm) {
     const results = await Spotify.search(searchTerm);
     this.setState({SearchResults: results});

@@ -1,8 +1,8 @@
-import { SearchBar } from "../Components/SearchBar/SearchBar";
-
 const clientID = '8160cc221c3148e3b8d0aed640dd3de9';
-const redirectURI = "http://three-click-playlist.surge.sh/";
-const baseURL = 'https://api.spotify.com/v1/'
+//const redirectURI = "http://three-click-playlist.surge.sh/";
+//Change the redirectURI back to the above URL here and on Spotify for Developers before building
+const redirectURI = "http://localhost:3000";
+const baseURL = 'https://api.spotify.com/v1/';
 
 let accessToken;
 
@@ -80,15 +80,11 @@ const Spotify = {
                 
                 try {
                     const PlaylistTracksEndpoint = `users/${userID}/playlists/${playlistID}/tracks`;
-                    const addResponse = await fetch(baseURL + PlaylistTracksEndpoint, {
+                    await fetch(baseURL + PlaylistTracksEndpoint, {
                         headers: headers,
                         method: 'POST',
                         body: JSON.stringify({ uris: trackURIs })
                     })
-                    if (addResponse.ok) {
-                        const addJsonResponse = addResponse.json();
-                        const snapShotID = addJsonResponse.snapshot_id;
-                    }
                 } catch(error) {
                     console.log(error);
                 }

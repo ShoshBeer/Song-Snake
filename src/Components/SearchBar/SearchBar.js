@@ -15,7 +15,7 @@ export class SearchBar extends React.Component {
     }
 
     handleEnter(e) {
-        if (e.keyCode == 13) return this.search();
+        if (e.keyCode === 13) return this.search();
     }
 
     handleTermChange(e) {

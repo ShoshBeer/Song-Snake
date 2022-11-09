@@ -21,11 +21,17 @@ export class SearchBar extends React.Component {
     handleTermChange(e) {
         this.setState({ term: e.target.value });
     }
+
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.searchTerm != this.props.searchTerm) {
+    //         this.setState({ term: this.props.searchTerm });
+    //     }
+    // }
     
     render() {
         return (
             <div className="SearchBar">
-                <input onKeyUp={this.handleEnter} onChange={this.handleTermChange} placeholder="Enter A Song, Album, or Artist" />
+                <input id='input' onKeyUp={this.handleEnter} onChange={this.handleTermChange} placeholder="Enter A Song, Album, or Artist" />
                 <button onClick={this.search} className="SearchButton">SEARCH</button>
             </div>
         )

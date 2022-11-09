@@ -11,7 +11,7 @@ export class App extends React.Component {
 
     this.state = { 
       SearchResults: [],
-      playlistName: 'My Playlist',
+      playlistName: '',
       playlistTracks: [],
      };
 
@@ -53,9 +53,10 @@ export class App extends React.Component {
     const trackURIs = this.state.playlistTracks.map( track => track.uri);
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState({
-      playlistName: 'New Playlist',
+      playlistName: '',
       playlistTracks: []
     });
+    document.getElementById('playlistName').value = '';
   }
 
   async search(searchTerm) {
@@ -68,7 +69,7 @@ export class App extends React.Component {
     //this is called right after a song is added to the playlist, so the track is set to the last item in the playlistTracks list
     const stringWords = trackObj.name + ' ' + trackObj.artist + ' ' + trackObj.album;
     //a string of all the words in the title, artist, and album of the song
-    const exclusionList = ['feat', 'album', 'single', 'remastered', 'with', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental'];
+    const exclusionList = ['feat', 'album', 'single', 'remastered', 'with', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental', 'remix'];
     //words found in titles, artists, and albums that aren't really identifiers
     const wordsReformatted = stringWords.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase().split(' ');
     //special characters are removed from the string and all words are added to an array

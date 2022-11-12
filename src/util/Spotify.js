@@ -11,17 +11,14 @@ const Spotify = {
         let url = window.location.href;
         
         if (accessToken) {
-            alert('I already have the access token');
             return accessToken;
         } else if (url.match(/access_token=([^&]*)/)) {
             accessToken = url.match(/access_token=([^&]*)/)[1];
             const expiry = Number(url.match(/expires_in=([^&]*)/)[1]);
             window.setTimeout(() => accessToken = '', expiry*1000);
             window.history.pushState('Access Token', null, '/');
-            alert('I grabbed the access token from the URL, set the expiry, and added to the browser history. The expiry is in: ' + expiry/60 + ' minutes.');
             return accessToken;
         } else {
-            alert("There is no access token yet, so I'm redirecting you to the login");
             window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`
         }
     },

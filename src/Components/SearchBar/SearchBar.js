@@ -2,44 +2,53 @@ import React, { useEffect, useState } from 'react';
 import './SearchBar.css';
 
 export function SearchBar(props) {
-    const [term, setTerm] = useState('initial state');
 
     const search = (searchTerm) => {
         return props.onSearch(searchTerm);
     }
 
+    const handleSubmit = () => {
+        props.setTerm(props.inputValue);
+    }
+
     const handleEnter = (e) => {
         if (e.key === 'Enter') {
-            return search(term);
+            props.setTerm(props.inputValue);
         }
     }
 
-    const handleTermChange = (e) => {
-        setTerm(e.target.value);
-        console.log(term);
+    const handleInputChange = (e) => {
+        props.setInputValue(e.target.value);
     }
 
     //this allows the initial search before authentication to automatically run after the redirect
-    let firstSearch;
     useEffect(() => {
         let url = window.location.href;
-        firstSearch = window.localStorage.getItem('termForRedirect')
+        const firstSearch = window.localStorage.getItem('termForRedirect')
         if (url.match(/access_token=([^&]*)/) && firstSearch) {
-            document.getElementById('input').value = firstSearch;
+            props.setInputValue(firstSearch);
             window.localStorage.removeItem('termForRedirect');
-            search(firstSearch);
+            props.setTerm(firstSearch);
         }; 
     }, []);
+
+    useEffect(() => {
+        if (!props.term) {
+            return;
+        }
+        search(props.term);
+    }, [props.term])
     
     return (
         <div className="SearchBar">
             <input 
             id='input' 
             onKeyUp={handleEnter} 
-            onChange={handleTermChange} 
+            onChange={handleInputChange} 
             placeholder="Enter A Song, Album, or Artist" 
-            autoComplete='off' />
-            <button onClick={search} className="SearchButton">SEARCH</button>
+            autoComplete='off'
+            value={props.inputValue} />
+            <button onClick={handleSubmit} className="SearchButton">SEARCH</button>
         </div>
     )
 }

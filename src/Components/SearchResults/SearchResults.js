@@ -7,14 +7,14 @@ export class SearchResults extends React.Component {
         let tracklist;
         if (this.props.playlistTracks.length > 0) {
             const lastTrack = this.props.playlistTracks[this.props.playlistTracks.length - 1];
-            const filteredTracks = this.props.SearchResults.filter(track => track.artist !== lastTrack.artist);
+            const filteredTracks = this.props.searchResults.filter(track => track.artist !== lastTrack.artist);
             tracklist = <Tracklist 
                             tracks={filteredTracks} 
                             onAdd={this.props.onAdd} 
                             isRemoval={false} />;
         } else {
             tracklist = <Tracklist 
-                            tracks={this.props.SearchResults} 
+                            tracks={this.props.searchResults} 
                             onAdd={this.props.onAdd} 
                             isRemoval={false} />;
         }

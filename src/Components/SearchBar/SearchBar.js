@@ -1,33 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SearchBar.css';
 
-export class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = ({ term: '' });
-        this.search = this.search.bind(this);
-        this.handleTermChange = this.handleTermChange.bind(this);
-        this.handleEnter = this.handleEnter.bind(this);
-    }
-    
-    search() {
-        this.props.onSearch(this.state.term);
+export function SearchBar(props) {
+    const [term, setTerm] = useState('initial state');
+
+    const search = (searchTerm) => {
+        return props.onSearch(searchTerm);
     }
 
-    handleEnter(e) {
-        if (e.keyCode === 13) return this.search();
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+            return search(term);
+        }
     }
 
-    handleTermChange(e) {
-        this.setState({ term: e.target.value });
+    const handleTermChange = (e) => {
+        setTerm(e.target.value);
+        console.log(term);
     }
+
+    //this allows the initial search before authentication to automatically run after the redirect
+    let firstSearch;
+    useEffect(() => {
+        let url = window.location.href;
+        firstSearch = window.localStorage.getItem('termForRedirect')
+        if (url.match(/access_token=([^&]*)/) && firstSearch) {
+            document.getElementById('input').value = firstSearch;
+            window.localStorage.removeItem('termForRedirect');
+            search(firstSearch);
+        }; 
+    }, []);
     
-    render() {
-        return (
-            <div className="SearchBar">
-                <input id='input' onKeyUp={this.handleEnter} onChange={this.handleTermChange} placeholder="Enter A Song, Album, or Artist" autoComplete='off' />
-                <button onClick={this.search} className="SearchButton">SEARCH</button>
-            </div>
-        )
-    }
+    return (
+        <div className="SearchBar">
+            <input 
+            id='input' 
+            onKeyUp={handleEnter} 
+            onChange={handleTermChange} 
+            placeholder="Enter A Song, Album, or Artist" 
+            autoComplete='off' />
+            <button onClick={search} className="SearchButton">SEARCH</button>
+        </div>
+    )
 }

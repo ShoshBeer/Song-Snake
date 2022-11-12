@@ -69,7 +69,7 @@ export class App extends React.Component {
     //this is called right after a song is added to the playlist, so the track is set to the last item in the playlistTracks list
     const stringWords = trackObj.name + ' ' + trackObj.artist + ' ' + trackObj.album;
     //a string of all the words in the title, artist, and album of the song
-    const exclusionList = ['feat', 'album', 'single', 'remastered', 'with', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental', 'remix'];
+    const exclusionList = ['feat', 'album', 'single', 'remastered', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental', 'remix'];
     //words found in titles, artists, and albums that aren't really identifiers
     const wordsReformatted = stringWords.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase().split(' ');
     //special characters are removed from the string and all words are added to an array
@@ -79,7 +79,6 @@ export class App extends React.Component {
       return longEnough && !excludedWord;
     });
     //final word list created by removing words less than 4 letters and words in the exclusion list
-    console.log(words);
     const word = words[Math.floor(Math.random()*words.length)]
     //random word is selected from list
     return word;
@@ -90,10 +89,19 @@ export class App extends React.Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar onSearch={this.search} searchTerm={this.state.searchTerm} />
+          <SearchBar onSearch={this.search} />
           <div className="App-playlist">
-            <SearchResults SearchResults={this.state.SearchResults} onAdd={this.addTrack} playlistTracks={this.state.playlistTracks} />
-            <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} tracks={this.state.SearchResults} />
+            <SearchResults 
+              SearchResults={this.state.SearchResults} 
+              onAdd={this.addTrack} 
+              playlistTracks={this.state.playlistTracks} />
+            <Playlist 
+              onSave={this.savePlaylist} 
+              onNameChange={this.updatePlaylistName} 
+              playlistName={this.state.playlistName} 
+              playlistTracks={this.state.playlistTracks} 
+              onRemove={this.removeTrack} 
+              tracks={this.state.SearchResults} />
           </div>
         </div>
       </div>

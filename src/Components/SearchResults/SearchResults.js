@@ -8,9 +8,15 @@ export class SearchResults extends React.Component {
         if (this.props.playlistTracks.length > 0) {
             const lastTrack = this.props.playlistTracks[this.props.playlistTracks.length - 1];
             const filteredTracks = this.props.SearchResults.filter(track => track.artist !== lastTrack.artist);
-            tracklist = <Tracklist tracks={filteredTracks} onAdd={this.props.onAdd} isRemoval={false} />;
+            tracklist = <Tracklist 
+                            tracks={filteredTracks} 
+                            onAdd={this.props.onAdd} 
+                            isRemoval={false} />;
         } else {
-            tracklist = <Tracklist tracks={this.props.SearchResults} onAdd={this.props.onAdd} isRemoval={false} />;
+            tracklist = <Tracklist 
+                            tracks={this.props.SearchResults} 
+                            onAdd={this.props.onAdd} 
+                            isRemoval={false} />;
         }
         
         return (

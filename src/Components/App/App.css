@@ -1,14 +1,20 @@
 .App {
   text-align: center;
-  height: 100%;
-  padding: 0 17% 10% 17%;
-  background-image: url('./background_photo_desktop.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 91vh;
+  padding-right: 10px;
+  padding-left: 10px;
+  background-image: repeating-linear-gradient(45deg, #000000c7, #000000c7 1px, #ec8b41eb 5px, #ec8b413d 50px);
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #fff;
+}
+
+.icon {
+  height: 45px;
+  width: 45px;
+  position: relative;
+  top: 8px;
+  right: 15px;
 }
 
 .App-logo {
@@ -57,16 +63,17 @@ html {
 }
 
 h1 {
-  padding: .77rem 0;
-  background-color: #010c3f;
-  text-align: center;
+  line-height: 9vh;
   font-family: 'Poppins', sans-serif;
-  font-size: 1.88rem;
+  font-size: 2.25rem;
   color: #fff;
+  display: inline;
 }
 
-h1 .highlight {
-  color: #6c41ec;
+.header {
+  height: 9vh;
+  background-color: hsl(229, 97%, 15%);
+  text-align: center;
 }
 
 h2 {
@@ -76,7 +83,7 @@ h2 {
 
 .App-playlist {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
 }
 

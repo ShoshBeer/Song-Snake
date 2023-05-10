@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './SearchBar.css';
 
 export function SearchBar(props) {
@@ -42,13 +42,13 @@ export function SearchBar(props) {
     return (
         <div className="SearchBar">
             <input 
-            id='input' 
-            onKeyUp={handleEnter} 
-            onChange={handleInputChange} 
-            placeholder="Enter A Song, Album, or Artist" 
-            autoComplete='off'
-            value={props.inputValue} />
-            <button onClick={handleSubmit} className="SearchButton">SEARCH</button>
+              id='input' 
+              onKeyUp={handleEnter} 
+              onChange={handleInputChange} 
+              placeholder="Enter A Song, Album, or Artist" 
+              autoComplete='off'
+              value={props.inputValue} />
+            <button onClick={handleSubmit} className="SearchButton">Search</button>
         </div>
     )
 }

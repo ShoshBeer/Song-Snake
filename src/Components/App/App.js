@@ -3,6 +3,7 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
+import icon from '../../resources/snake.png';
 import React, { useEffect, useState } from 'react';
 
 export function App (props) {
@@ -26,7 +27,6 @@ export function App (props) {
 
   useEffect(() => {
     //this is called when a new track is added to the playlist, so the next search is automatically sent
-    console.log(playlistTracks);
     if (playlistTracks.length > 0) {
       const word = findSharedWord();
       //randomWord won't be updated until after the search, but it will be updated before the next word is selected so it can prevent repeated words
@@ -83,19 +83,29 @@ export function App (props) {
 
   return (
     <div>
-      <h1>Ja<span className="highlight">mmm</span>ing</h1>
+      <div className='header'>
+        <img
+          src={icon}
+          className='icon'
+        ></img>
+        <h1>Song Snake</h1>
+      </div>
+
       <div className="App">
+
         <SearchBar 
         onSearch={search}
         setTerm={setTerm}
         setInputValue={setInputValue}
         term={term}
         inputValue={inputValue} />
+
         <div className="App-playlist">
           <SearchResults 
             searchResults={searchResults} 
             onAdd={addTrack} 
             playlistTracks={playlistTracks} />
+
           <Playlist 
             onSave={savePlaylist} 
             onNameChange={setPlaylistName} 
@@ -103,8 +113,10 @@ export function App (props) {
             playlistTracks={playlistTracks} 
             onRemove={removeTrack} 
             tracks={searchResults} />
+
         </div>
       </div>
+
     </div>
   );
 

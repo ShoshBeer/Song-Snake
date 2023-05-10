@@ -87,6 +87,7 @@ export function App (props) {
         <img
           src={icon}
           className='icon'
+          alt='Snake icon'
         ></img>
         <h1>Song Snake</h1>
       </div>

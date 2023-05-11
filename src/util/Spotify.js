@@ -1,7 +1,7 @@
 const clientID = '8160cc221c3148e3b8d0aed640dd3de9';
-//const redirectURI = "http://three-click-playlist.surge.sh/";
+const redirectURI = "https://song-snake.netlify.app/";
 //Change the redirectURI back to the above URL here and on Spotify for Developers before building
-const redirectURI = "http://localhost:3000";
+// const redirectURI = "http://localhost:3000";
 const baseURL = 'https://api.spotify.com/v1/';
 
 let accessToken;

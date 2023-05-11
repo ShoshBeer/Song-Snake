@@ -1,0 +1,14 @@
+.footer {
+  background-color: hsl(229, 97%, 15%);
+  text-align: center;
+  min-height: 1.5rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+  line-height: 1.5rem;
+}

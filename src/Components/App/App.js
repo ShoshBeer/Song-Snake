@@ -5,6 +5,7 @@ import { Playlist } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
 import icon from '../../resources/snake.png';
 import React, { useEffect, useState } from 'react';
+import { Footer } from '../Footer/Footer.js';
 
 export function App (props) {
   const [searchResults, setSearchResults] = useState([]);
@@ -114,6 +115,10 @@ export function App (props) {
             tracks={searchResults} />
 
         </div>
+      </div>
+
+      <div>
+        <Footer />
       </div>
 
     </div>

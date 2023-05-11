@@ -43,6 +43,7 @@ h1 {
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #fff;
+  min-height: calc(100% - 5.5rem);
 }
 
 h2 {

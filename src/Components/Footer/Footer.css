@@ -12,3 +12,7 @@
   color: white;
   line-height: 1.5rem;
 }
+
+.footer a:hover {
+  color: #f7caa9;
+}

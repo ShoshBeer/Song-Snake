@@ -1,12 +1,23 @@
-.App {
-  text-align: center;
-  height: 91vh;
-  padding-right: 10px;
-  padding-left: 10px;
+html, 
+body, 
+#root,
+.container {
+  height: 100%;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
   background-image: repeating-linear-gradient(45deg, #000000c7, #000000c7 1px, #ec8b41eb 5px, #ec8b413d 50px);
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 500;
-  color: #fff;
+  background-attachment: fixed;
+}
+
+.header {
+  height: 4rem;
+  background-color: hsl(229, 97%, 15%);
+  text-align: center;
 }
 
 .icon {
@@ -17,63 +28,21 @@
   right: 15px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-body,
-html,
-#root {
-  height: 100%;
-}
-
-html {
-  font-size: 18px;
-}
-
 h1 {
-  line-height: 9vh;
+  line-height: 4rem;
   font-family: 'Poppins', sans-serif;
   font-size: 2.25rem;
   color: #fff;
   display: inline;
 }
 
-.header {
-  height: 9vh;
-  background-color: hsl(229, 97%, 15%);
+.App {
   text-align: center;
+  padding-right: 10px;
+  padding-left: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  color: #fff;
 }
 
 h2 {

@@ -31,7 +31,6 @@ export function App (props) {
       const word = findSharedWord();
       //randomWord won't be updated until after the search, but it will be updated before the next word is selected so it can prevent repeated words
       setRandomWord(word);
-      console.log('findSharedWord in useEffect: ', randomWord);
       //selected word from properties and updated state to new word
       setInputValue(word);
       //SearchBar displays the new word in the input field
@@ -75,14 +74,13 @@ export function App (props) {
       return longEnough && !excludedWord && differentWord;
     });
     //final word list created by removing words less than 4 letters and words in the exclusion list
-    console.log('Words from findSharedWord: ', words);
     const word = words[Math.floor(Math.random()*words.length)]
     // //random word is selected from list
     return word;
   }
 
   return (
-    <div>
+    <div className='container'>
       <div className='header'>
         <img
           src={icon}

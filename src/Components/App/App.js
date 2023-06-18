@@ -6,6 +6,7 @@ import { Spotify } from '../../util/Spotify';
 import icon from '../../resources/snake.png';
 import React, { useEffect, useState } from 'react';
 import { Footer } from '../Footer/Footer.js';
+import { ThemeInput } from '../ThemeInput/ThemeInput';
 
 export function App (props) {
   const [searchResults, setSearchResults] = useState([]);
@@ -14,6 +15,7 @@ export function App (props) {
   const [term, setTerm] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [randomWord, setRandomWord] = useState('');
+  const [theme, setTheme] = useState('');
 
   function addTrack(track) {
     const dupCheck = (song) => song.id === track.id;
@@ -46,7 +48,7 @@ export function App (props) {
   }
 
   function savePlaylist() {
-    const trackURIs = playlistTracks.map( track => track.uri);
+    const trackURIs = playlistTracks.map(track => track.uri);
     Spotify.savePlaylist(playlistName, trackURIs);
     setPlaylistName('');
     setPlaylistTracks([]);
@@ -93,12 +95,16 @@ export function App (props) {
 
       <div className="App">
 
+        <ThemeInput 
+          theme={theme}
+          setTheme={setTheme} />
+
         <SearchBar 
-        onSearch={search}
-        setTerm={setTerm}
-        setInputValue={setInputValue}
-        term={term}
-        inputValue={inputValue} />
+          onSearch={search}
+          setTerm={setTerm}
+          setInputValue={setInputValue}
+          term={term}
+          inputValue={inputValue} />
 
         <div className="App-playlist">
           <SearchResults 

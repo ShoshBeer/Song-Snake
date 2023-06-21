@@ -51,6 +51,7 @@ export function App (props) {
 
   async function themeSearch(theme=null) {
     const example = ['Kush - Dr. Dre', 'Because I Got High - Afroman', "Smokin' On - Snoop Dogg ft. Wiz Khalifa", 'I Smoke I Drank - Body Head Bangerz ft. YoungBloodZ', 'Roll It Up, Light It Up, Smoke It Up - Cypress Hill'];
+    const example2 = "Happy - Pharrell Williams, Dancing Queen - ABBA, I Wanna Dance with Somebody - Whitney Houston, Don't Stop Me Now - Queen, Uptown Funk - Mark Ronson ft. Bruno Mars"
     let songsString;
     if (theme) {
       setPlaylistName(theme);
@@ -64,34 +65,46 @@ export function App (props) {
       songsString = await AIFuncs.getSongs(AItheme);
       console.log(songsString);
     }
+    if (typeof songsString === 'string') {
+      songsString = songsString.split(',');
+    }
     if (Array.isArray(songsString)) {
       songsString.forEach(async (song) => {
         const tracks = await Spotify.search(song);
-        const track = tracks[0];
-        const duplicate = playlistTracks.some(addedSong => addedSong.id === track.id);
-        if (!duplicate) {
+        const track = tracks.find(returnedSong => {
+          const songDetails = song.split('-');
+          const songDetailsClean = songDetails.map(detail => detail.trim().toLowerCase());
+          if (songDetailsClean[0].includes(returnedSong.name.toLowerCase()) || returnedSong.name.toLowerCase().includes(songDetailsClean[0])) {
+            if (songDetailsClean[1].includes(returnedSong.artist.toLowerCase()) || returnedSong.artist.toLowerCase().includes(songDetailsClean[1])) {
+              const duplicate = playlistTracks.some(addedSong => addedSong.id === returnedSong.id);
+              if (!duplicate) {
+                return true
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        });
+        if (track) {
           setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
-        }
-      });
-    } else if (typeof songsString === 'string') {
-      songsString.split(',').forEach(async (song) => {
-        const tracks = await Spotify.search(song);
-        const track = tracks[0];
-        const duplicate = playlistTracks.some(song => song.id === track.id);
-        if (!duplicate) {
-          setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
+        } else {
+          console.log(`Couldn't find suitable Spotify result for ${song}`);
         }
       });
     } else {
       console.log(`songString is not an array or string, it is: ${songsString}`);
-      example.forEach(async (song) => {
-        const tracks = await Spotify.search(song);
-        const track = tracks[0];
-        const duplicate = playlistTracks.some(song => song.id === track.id);
-        if (!duplicate) {
-          setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
-        }
-      });
+      // example.forEach(async (song) => {
+      //   const tracks = await Spotify.search(song);
+      //   const track = tracks[0];
+      //   const duplicate = playlistTracks.some(song => song.id === track.id);
+      //   if (!duplicate) {
+      //     setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
+      //   }
+      // });
     }
   }
 

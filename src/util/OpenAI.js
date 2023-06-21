@@ -24,7 +24,7 @@ const AIFuncs = {
               properties: {
                 theme: {
                   type: "string",
-                  description: "A concept."
+                  description: "A concept. String must not be empty."
                 }
               },
               required: ["theme"]

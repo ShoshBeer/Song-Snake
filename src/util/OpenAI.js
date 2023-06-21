@@ -1,8 +1,8 @@
-const dotenv = require("dotenv").config();
+// const dotenv = require("dotenv").config();
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-  apiKey: process.env.OpenAI_Key
+  apiKey: process.env.REACT_APP_OpenAI_Key
 });
 const openai = new OpenAIApi(configuration);
 
@@ -52,7 +52,7 @@ const AIFuncs = {
         model: "gpt-3.5-turbo-0613",
         messages: [
           {"role": "system", "content": "You are a clever music guru."}, 
-          {"role": "user", "content": `Make me a playlist with the theme ${theme}.`}
+          {"role": "user", "content": `Give me a list of songs with the theme ${theme}.`}
         ],
         functions: [
           {
@@ -63,7 +63,7 @@ const AIFuncs = {
               properties: {
                 listOfSongs: {
                   type: "string",
-                  description: "A list of five songs whose lyrics relate to a particular theme."
+                  description: "Five songs whose lyrics relate to a particular theme. Format: [song - artist, ...]"
                 }
               },
               required: ["listOfSongs"]

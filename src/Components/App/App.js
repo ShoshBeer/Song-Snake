@@ -3,6 +3,7 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
+import { AIFuncs } from '../../util/OpenAI';
 import icon from '../../resources/snake.png';
 import React, { useEffect, useState } from 'react';
 import { Footer } from '../Footer/Footer.js';
@@ -15,6 +16,7 @@ export function App (props) {
   const [term, setTerm] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [randomWord, setRandomWord] = useState('');
+  const [themeInput, setThemeInput] = useState('');
   const [theme, setTheme] = useState('');
 
   function addTrack(track) {
@@ -27,20 +29,6 @@ export function App (props) {
        //added selected song to playlist tracks state and rendered by Playlist component
     }
   }
-
-  useEffect(() => {
-    //this is called when a new track is added to the playlist, so the next search is automatically sent
-    if (playlistTracks.length > 0) {
-      const word = findSharedWord();
-      //randomWord won't be updated until after the search, but it will be updated before the next word is selected so it can prevent repeated words
-      setRandomWord(word);
-      //selected word from properties and updated state to new word
-      setInputValue(word);
-      //SearchBar displays the new word in the input field
-      setTerm(word);
-      //term change will be passed to Searchbar and trigger a useEffect that will search with the new term
-    }
-  }, [playlistTracks])
 
   function removeTrack(track) {
     const songCheck = (song) => song.id !== track.id;
@@ -61,26 +49,55 @@ export function App (props) {
     setSearchResults(results);
   }
 
-  function findSharedWord() {
-    const trackObj = playlistTracks[playlistTracks.length - 1];
-    //track of interest is the most recently added aka last item in the playlistTracks list
-    const stringWords = `${trackObj.name} ${trackObj.artist} ${trackObj.album}`;
-    //a string of all the words in the title, artist, and album of the song
-    const exclusionList = ['feat', 'album', 'single', 'remastered', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental', 'remix'];
-    //words found in titles, artists, and albums that aren't really identifiers
-    const wordsReformatted = stringWords.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase().split(' ');
-    //special characters are removed from the string and all words are added to an array
-    const words = wordsReformatted.filter(word => {
-      const differentWord = word !== randomWord;
-      const longEnough = word.length > 3;
-      const excludedWord = exclusionList.includes(word);
-      return longEnough && !excludedWord && differentWord;
-    });
-    //final word list created by removing words less than 4 letters and words in the exclusion list
-    const word = words[Math.floor(Math.random()*words.length)]
-    // //random word is selected from list
-    return word;
+  async function themeSearch(theme=null) {
+    if (theme) {
+      const songsString = await AIFuncs.getSongs(theme);
+      console.log(songsString);
+    } else {
+      const AItheme = await AIFuncs.getTheme()
+      const songsString = await AIFuncs.getSongs(AItheme);
+      console.log(AItheme, songsString);
+    }
   }
+
+  useEffect(() => {
+    themeSearch(theme);
+  }, [theme])
+
+  // function findSharedWord() {
+  //   const trackObj = playlistTracks[playlistTracks.length - 1];
+  //   //track of interest is the most recently added aka last item in the playlistTracks list
+  //   const stringWords = `${trackObj.name} ${trackObj.artist} ${trackObj.album}`;
+  //   //a string of all the words in the title, artist, and album of the song
+  //   const exclusionList = ['feat', 'album', 'single', 'remastered', 'original', 'soundtrack', 'edit', 'hits', 'greatest', 'instrumental', 'remix'];
+  //   //words found in titles, artists, and albums that aren't really identifiers
+  //   const wordsReformatted = stringWords.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase().split(' ');
+  //   //special characters are removed from the string and all words are added to an array
+  //   const words = wordsReformatted.filter(word => {
+  //     const differentWord = word !== randomWord;
+  //     const longEnough = word.length > 3;
+  //     const excludedWord = exclusionList.includes(word);
+  //     return longEnough && !excludedWord && differentWord;
+  //   });
+  //   //final word list created by removing words less than 4 letters and words in the exclusion list
+  //   const word = words[Math.floor(Math.random()*words.length)]
+  //   // //random word is selected from list
+  //   return word;
+  // }
+
+  // useEffect(() => {
+  //   //this is called when a new track is added to the playlist, so the next search is automatically sent
+  //   if (playlistTracks.length > 0) {
+  //     const word = findSharedWord();
+  //     //randomWord won't be updated until after the search, but it will be updated before the next word is selected so it can prevent repeated words
+  //     setRandomWord(word);
+  //     //selected word from properties and updated state to new word
+  //     setInputValue(word);
+  //     //SearchBar displays the new word in the input field
+  //     setTerm(word);
+  //     //term change will be passed to Searchbar and trigger a useEffect that will search with the new term
+  //   }
+  // }, [playlistTracks])
 
   return (
     <div className='container'>
@@ -96,14 +113,17 @@ export function App (props) {
       <div className="App">
 
         <ThemeInput 
-          theme={theme}
-          setTheme={setTheme} />
+          setTheme={setTheme}
+          setThemeInput={setThemeInput}
+          themeInput={themeInput}
+          // themeSearch={themeSearch} 
+          />
 
         <SearchBar 
           onSearch={search}
           setTerm={setTerm}
-          setInputValue={setInputValue}
           term={term}
+          setInputValue={setInputValue}
           inputValue={inputValue} />
 
         <div className="App-playlist">

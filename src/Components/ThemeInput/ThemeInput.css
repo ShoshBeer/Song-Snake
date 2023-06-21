@@ -19,3 +19,22 @@
 .ThemeInput input:focus {
   outline: none;
 }
+
+.SearchButton {
+  cursor: pointer;
+  width: 8.11rem;
+  padding: .77rem 0;
+  border-radius: 4px;
+  background-color: hsl(229, 97%, 15%);
+  text-align: center;
+  font-size: 1rem;
+  transition: background-color .25s;
+  border: 0px;
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.SearchButton:hover {
+  background-color: rgba(108, 65, 233, .7);
+}

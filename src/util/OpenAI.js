@@ -1,3 +1,4 @@
+// require('dotenv').config();
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
@@ -17,23 +18,25 @@ const AIFuncs = {
         functions: [
           {
             name: "generateTheme",
-            description: "Generate a random theme to make a playlist.",
+            description: "Take a concept and output a playlist with related songs.",
             parameters: {
               type: "object",
               properties: {
                 theme: {
                   type: "string",
-                  description: "A random theme, unrelated to music. Examples: driving, time travel, mysteries."
+                  description: "A concept."
                 }
               },
               required: ["theme"]
             }
           }
         ],
-        function_call: {"name": "generateTheme"}
+        function_call: {"name": "generateTheme"},
+        temperature: 2
       });
       const response = themeChoice.data.choices[0].message;
-      const theme = JSON.parse(response.function_call.arguments).theme;
+      console.log(response);
+      const theme = await JSON.parse(response.function_call.arguments).theme;
       return theme;
     } catch (error) {
       if (error.response) {
@@ -86,6 +89,8 @@ const AIFuncs = {
     }
   }  
 }
+
+// const test = AIFuncs.getTheme();
 
 export { AIFuncs };
 

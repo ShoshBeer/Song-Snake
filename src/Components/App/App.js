@@ -1,5 +1,5 @@
 import './App.css';
-import { SearchBar } from '../SearchBar/SearchBar';
+// import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
 import { Spotify } from '../../util/Spotify';
@@ -13,9 +13,9 @@ export function App (props) {
   const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
-  const [term, setTerm] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [randomWord, setRandomWord] = useState('');
+  // const [term, setTerm] = useState('');
+  // const [inputValue, setInputValue] = useState('');
+  // const [randomWord, setRandomWord] = useState('');
   const [themeInput, setThemeInput] = useState('');
   const [theme, setTheme] = useState('');
 
@@ -50,19 +50,50 @@ export function App (props) {
   }
 
   async function themeSearch(theme=null) {
+    const example = ['Kush - Dr. Dre', 'Because I Got High - Afroman', "Smokin' On - Snoop Dogg ft. Wiz Khalifa", 'I Smoke I Drank - Body Head Bangerz ft. YoungBloodZ', 'Roll It Up, Light It Up, Smoke It Up - Cypress Hill'];
+    let songsString;
     if (theme) {
-      const songsString = await AIFuncs.getSongs(theme);
+      setPlaylistName(theme);
+      songsString = await AIFuncs.getSongs(theme);
       console.log(songsString);
     } else {
       const AItheme = await AIFuncs.getTheme()
-      const songsString = await AIFuncs.getSongs(AItheme);
-      console.log(AItheme, songsString);
+      console.log(AItheme);
+      setTheme(AItheme);
+      setPlaylistName(AItheme);
+      songsString = await AIFuncs.getSongs(AItheme);
+      console.log(songsString);
+    }
+    if (Array.isArray(songsString)) {
+      songsString.forEach(async (song) => {
+        const tracks = await Spotify.search(song);
+        const track = tracks[0];
+        const duplicate = playlistTracks.some(addedSong => addedSong.id === track.id);
+        if (!duplicate) {
+          setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
+        }
+      });
+    } else if (typeof songsString === 'string') {
+      songsString.split(',').forEach(async (song) => {
+        const tracks = await Spotify.search(song);
+        const track = tracks[0];
+        const duplicate = playlistTracks.some(song => song.id === track.id);
+        if (!duplicate) {
+          setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
+        }
+      });
+    } else {
+      console.log(`songString is not an array or string, it is: ${songsString}`);
+      example.forEach(async (song) => {
+        const tracks = await Spotify.search(song);
+        const track = tracks[0];
+        const duplicate = playlistTracks.some(song => song.id === track.id);
+        if (!duplicate) {
+          setPlaylistTracks((playlistTracks) => [...playlistTracks, track]);
+        }
+      });
     }
   }
-
-  useEffect(() => {
-    themeSearch(theme);
-  }, [theme])
 
   // function findSharedWord() {
   //   const trackObj = playlistTracks[playlistTracks.length - 1];
@@ -113,18 +144,20 @@ export function App (props) {
       <div className="App">
 
         <ThemeInput 
+          theme={theme}
           setTheme={setTheme}
           setThemeInput={setThemeInput}
           themeInput={themeInput}
-          // themeSearch={themeSearch} 
+          themeSearch={themeSearch} 
+          getAccessToken={Spotify.getAccessToken}
           />
 
-        <SearchBar 
+        {/* <SearchBar 
           onSearch={search}
           setTerm={setTerm}
           term={term}
           setInputValue={setInputValue}
-          inputValue={inputValue} />
+          inputValue={inputValue} /> */}
 
         <div className="App-playlist">
           <SearchResults 
@@ -138,7 +171,7 @@ export function App (props) {
             playlistName={playlistName} 
             playlistTracks={playlistTracks} 
             onRemove={removeTrack} 
-            tracks={searchResults} />
+           />
 
         </div>
       </div>
